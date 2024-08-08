@@ -1,13 +1,15 @@
 /* eslint import/no-unresolved: "off", import/extensions: "off" */
-import { uploadPhoto, signUpUser } from './utils';
+import { uploadPhoto, createUser } from './utils';
 
 export default async function asyncUploadUser() {
-  try {
-    const user = await signUpUser();
-    const photo = await uploadPhoto();
+	let res = {};
 
-    return { photo, user };
-  } catch (err) {
-    return { photo: null, user: null };
-  }
+	try {
+		const photo = await uploadPhoto();
+		const user = await createUser();
+		res = { photo, user };
+	} catch (err) {
+		res = { photo: null, user: null };
+	}
+	return res;
 }
