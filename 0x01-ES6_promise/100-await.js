@@ -1,5 +1,5 @@
 /* eslint import/no-unresolved: "off", import/extensions: "off" */
-import { uploadPhoto, signUpUser } from 'utils.js';
+import { uploadPhoto, signUpUser } from './utils';
 
 export default async function asyncUploadUser() {
   try {
