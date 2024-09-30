@@ -1,12 +1,14 @@
-console.log('Welcome to Holberton School, what is your name?');
-process.stdin.setEncoding('utf-8');
+/**
+ * Reads stdin and writes to stdout
+ */
+process.stdout.write('Welcome to Holberton School, what is your name?\n');
+process.stdin.setEncoding('utf8');
 process.stdin.on('readable', () => {
-  const name = process.stdin.read();
-  if (name !== null) {
-    process.stdout.write(`Your name is: ${name.toString().trim()}\n`);
+  const input = process.stdin.read();
+  if (input !== null) {
+    process.stdout.write(`Your name is: ${input}`);
   }
 });
-
-process.stdin.on('close', () => {
-  process.stdout.write('This important software is now closing');
+process.stdin.on('end', () => {
+  process.stdout.write('This important software is now closing\n');
 });
