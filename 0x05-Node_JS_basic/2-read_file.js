@@ -2,7 +2,7 @@ const fs = require('fs');
 
 function countStudents(path) {
   try {
-    const data = fs.readFileSync(path, 'utf8');
+    const data = fs.readFileSync(path, { encoding: 'utf-8', flag: 'r' });
     const lines = data.split('\n').slice(1).filter((line) => line.trim() !== '');
     console.log(`Number of students: ${lines.length}`);
 
@@ -26,7 +26,7 @@ function countStudents(path) {
       console.log(`Number of students in ${field}: ${students.length}. List: ${names}`);
     }
   } catch (err) {
-    console.error('Cannot load the database');
+    throw new Error('Cannot load the database');
   }
 }
 
