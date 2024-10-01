@@ -26,12 +26,14 @@ function countStudents(path) {
         return acc;
       }, {});
 
+      const result = [];
       for (const [field, students] of Object.entries(groupedByField)) {
         const names = students.map((student) => student.firstname).join(', ');
-        console.log(`Number of students in ${field}: ${students.length}. List: ${names}`);
+        result.push(`Number of students in ${field}: ${students.length}. List: ${names}`);
       }
 
-      resolve();
+      console.log(result.join('\n'));
+      resolve(result);
     });
   });
 }
