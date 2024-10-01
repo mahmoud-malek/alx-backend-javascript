@@ -2,7 +2,7 @@ const fs = require('node:fs/promises');
 
 async function countStudents(path) {
   try {
-    const data = await fs.readFile(path, { encoding: 'utf-8', flag: 'r' });
+    const data = await fs.readFile(path, 'utf8');
     const lines = data.split('\n').slice(1).filter((line) => line.trim() !== '');
     console.log(`Number of students: ${lines.length}`);
 
