@@ -2,7 +2,6 @@
  * Create a small HTTP server using Node's HTTP module
  */
 
-const exp = require('node:constants');
 const { createServer } = require('node:http');
 
 const port = 1245;
@@ -15,3 +14,4 @@ const app = createServer((req, res) => {
 });
 
 app.listen(port, host);
+module.exports = app;
