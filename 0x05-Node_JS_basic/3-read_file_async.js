@@ -1,18 +1,20 @@
-const fs = require('node:fs/promises');
+const fs = require('fs');
 
-async function countStudents(path) {
+function countStudents(path) {
   return new Promise((resolve, reject) => {
-    fs.readFile(path, { encoding: 'utf-8' }).then((data) => {
+    fs.readFile(path, { encoding: 'utf-8' }, (err, data) => {
+      if (err) {
+        reject(new Error('Cannot load the database'));
+        return;
+      }
+
       const lines = data.split('\n').slice(1).filter((line) => line.trim() !== '');
       console.log(`Number of students: ${lines.length}`);
 
       const students = lines.map((line) => {
         const [firstname, lastname, age, field] = line.split(',');
         return {
-          firstname,
-          lastname,
-          age,
-          field,
+          firstname, lastname, age, field,
         };
       });
 
@@ -28,9 +30,8 @@ async function countStudents(path) {
         const names = students.map((student) => student.firstname).join(', ');
         console.log(`Number of students in ${field}: ${students.length}. List: ${names}`);
       }
+
       resolve();
-    }).catch(() => {
-      reject(new Error('Cannot load the database'));
     });
   });
 }

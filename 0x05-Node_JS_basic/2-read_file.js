@@ -1,34 +1,33 @@
-/**
- * Reads file asynchronously and prepares a report with the data from a csv file
- */
 const fs = require('fs');
 
 function countStudents(path) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf8', (err, records) => {
-      if (err) reject(new Error('Cannot load the database'));
-      else {
-        const content = records.split('\n');
-        const cslist = [];
-        const swelist = [];
+  try {
+    const data = fs.readFileSync(path, { encoding: 'utf-8', flag: 'r' });
+    const lines = data.split('\n').slice(1).filter((line) => line.trim() !== '');
+    console.log(`Number of students: ${lines.length}`);
 
-        content.forEach((record) => {
-          const field = record.split(',');
-          if (field !== [] && field !== null) {
-            if (field[3] === 'CS') {
-              cslist.push(field[0]);
-            } else if (field[3] === 'SWE') {
-              swelist.push(field[0]);
-            }
-          }
-        });
-        console.log(`Number of students: ${cslist.length + swelist.length}`);
-        console.log(`Number of students in CS: ${cslist.length}. List: ${cslist.join(', ')}`);
-        console.log(`Number of students in SWE: ${swelist.length}. List: ${swelist.join(', ')}`);
-        resolve();
-      }
+    const students = lines.map((line) => {
+      const [firstname, lastname, age, field] = line.split(',');
+      return {
+        firstname, lastname, age, field,
+      };
     });
-  });
+
+    const groupedByField = students.reduce((acc, student) => {
+      if (!acc[student.field]) {
+        acc[student.field] = [];
+      }
+      acc[student.field].push(student);
+      return acc;
+    }, {});
+
+    for (const [field, students] of Object.entries(groupedByField)) {
+      const names = students.map((student) => student.firstname).join(', ');
+      console.log(`Number of students in ${field}: ${students.length}. List: ${names}`);
+    }
+  } catch (err) {
+    throw new Error('Cannot load the database');
+  }
 }
 
 module.exports = countStudents;
